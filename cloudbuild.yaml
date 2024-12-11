@@ -1,0 +1,30 @@
+steps:
+- name: 'python:3.9'
+  entrypoint: 'pip'
+  args: ['install', '-r', 'requirements.txt', '--user']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/sentiment-analysis:$COMMIT_SHA', '.']
+images:
+- 'gcr.io/$PROJECT_ID/sentiment-analysis:$COMMIT_SHA'
+options:
+  substitutionOption: 'ALLOW_LOOSE'
+substitutions:
+  _SERVICE_NAME: 'sentiment-analysis' # Default value
+  _REGION: 'us-central1' # Default Value
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'gcloud'
+  args:
+  - 'run'
+  - 'deploy'
+  - '${_SERVICE_NAME}'
+  - '--image'
+  - 'gcr.io/$PROJECT_ID/sentiment-analysis:$COMMIT_SHA'
+  - '--region'
+  - '${_REGION}'
+  - '--platform'
+  - 'managed'
+  - '--allow-unauthenticated'
+  - '--set-env-vars'
+  - 'BUCKET_NAME=${BUCKET_NAME}'
+  - '--port'
+  - '8080'
