@@ -1,4 +1,2 @@
-Flask
-nltk
-gunicorn
+google-cloud-language
 google-cloud-storage
