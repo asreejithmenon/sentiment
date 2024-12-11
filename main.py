@@ -13,11 +13,21 @@ if __name__ == "__main__":
     # Set the bucket name and file name directly
     bucket_name = "sent-anal-bucket"
     file_name = "sample.csv"
+
+    # Debugging: Print bucket and file name
+    print(f"Bucket: {bucket_name}, File: {file_name}")
     
     # Initialize the Google Cloud Storage client
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
+    
+    # Debugging: Print the bucket object
+    print(f"Bucket object: {bucket}")
+    
     blob = bucket.blob(file_name)
+    
+    # Debugging: Print the blob object
+    print(f"Blob object: {blob}")
     
     # Download the content of the CSV file as text
     content = blob.download_as_text()
