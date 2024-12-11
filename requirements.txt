@@ -1,2 +1,4 @@
-google-cloud-language
-flask
+Flask
+nltk
+gunicorn
+google-cloud-storage
