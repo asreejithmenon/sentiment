@@ -19,21 +19,29 @@ if __name__ == "__main__":
     
     # Initialize the Google Cloud Storage client
     storage_client = storage.Client()
-    bucket = storage_client.bucket(bucket_name)
-    
-    # Debugging: Print the bucket object
-    print(f"Bucket object: {bucket}")
-    
+
+    # Try to get the bucket and handle errors
+    try:
+        bucket = storage_client.get_bucket(bucket_name)
+        print(f"Successfully accessed the bucket: {bucket_name}")
+    except Exception as e:
+        print(f"Error accessing bucket: {e}")
+        raise
+
     blob = bucket.blob(file_name)
-    
+
     # Debugging: Print the blob object
     print(f"Blob object: {blob}")
-    
+
     # Download the content of the CSV file as text
-    content = blob.download_as_text()
-    
+    try:
+        content = blob.download_as_text()
+        print(f"File content downloaded successfully.")
+    except Exception as e:
+        print(f"Error downloading file: {e}")
+        raise
+
     # Process the content (skip the header line)
     lines = content.splitlines()
     for line in lines[1:]:  # Skip the header
         print(analyze_sentiment(line))
-
